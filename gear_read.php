@@ -13,6 +13,7 @@ try {
   exit();
 }
 
+$user_id = $_SESSION['user_id'];
 
 // SQL作成&実行
 // ここで表示したいことを書く（絞り込み、並び替えなど）
@@ -41,7 +42,7 @@ if ($status == false) {
 foreach ($result as $record) {
   $output .= "
     <tr>
-      <td></td>
+      <td><a href='like_create.php?user_id={$user_id}&item_id={$record["id"]}'>like</a></td>
       <td>{$record["item"]}</td>
       <td>{$record["genre"]}</td>
       <td>{$record["maker"]}</td>
@@ -76,8 +77,8 @@ foreach ($result as $record) {
 <body>
   <fieldset>
     <legend>キャンプギアリスト（一覧画面）</legend>
-    <a href="gear_input.php">入力画面へ</a>
-    <a href="gear_index.php">ホームへ</a>
+    <a href="gear_input.php" class="button is-info">入力画面へ</a>
+    <a href="gear_index.php" class="button is-success">ホームへ</a>
   <div class="columns">
     <div class="column">
       <table class="table is-bordered">

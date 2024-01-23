@@ -58,8 +58,8 @@ $dbh=null;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 <body>
-<a href="gear_input.php">入力画面へ</a>
-<a href="gear_index.php">ホームへ</a>
+<a href="gear_input.php" class="button is-info">入力画面へ</a>
+<a href="gear_index.php" class="button is-success">ホームへ</a>
 <!--検索-->
 <form action="gear_search.php" method="POST">
 <table>

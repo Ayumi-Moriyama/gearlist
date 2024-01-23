@@ -1,5 +1,7 @@
 <?php
+session_start();
 include('functions.php');
+check_session_id();
 
 // データ受け取り
 $id = $_GET['id'];
