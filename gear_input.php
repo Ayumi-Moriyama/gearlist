@@ -17,7 +17,7 @@
 <body>
   <form action="gear_create.php" method="POST">
     <fieldset>
-      <legend>キャンプギアリスト（入力画面）</legend>
+      <legend>キャンプギアリスト（登録画面）</legend>
       <a href="gear_read.php">一覧画面</a>
       <div>
         アイテム名: <input type="text" name="item">

@@ -1,3 +1,14 @@
+<?php
+session_start();
+include("functions.php");
+check_session_id();
+
+$pdo = connect_to_db();
+
+$username = $_SESSION['username'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,41 +21,44 @@
 <body>
 <section class="hero is-success is-halfheight">
     <div class="hero-body">
-    <div class="">
-        <p class="title">
-        キャンプギアリスト
-        </p>
-        <p class="subtitle">
-        キャンプギアの登録・検索・集計
-        </p>
-    </div>
+        <div class="">
+            <p class="title">
+                キャンプギアリスト
+            </p>
+            <p class="subtitle">
+                <?php echo $username;?>さんのマイページ
+            </p>
+        </div>
     </div>
 </section>
 
 <div class="tile is-ancestor">
-    <div class="tile is-parent">
-    <article class="tile is-child box">
-        <p class="title">登録</p>
-        <p class="subtitle">キャンプギアを登録する</p>
-        <a href="gear_input.php" class="button is-dark">登録画面へ</a>
-    </article>
-    </div>
+
     <div class="tile is-parent">
     <article class="tile is-child box">
         <p class="title">検索</p>
-        <p class="subtitle">手持ちのキャンプギアを検索する</p>
+        <p class="subtitle">キャンプギアを検索しマイリストに登録</p>
         <a href="gear_search.php" class="button is-dark">検索画面へ</a>
     </article>
     </div>
     <div class="tile is-parent">
     <article class="tile is-child box">
-        <p class="title">集計</p>
-        <p class="subtitle">キャンプギアの重量などを集計する</p>
-        <a href="gear_read.php" class="button is-dark">集計画面へ</a>
+        <p class="title">マイリスト</p>
+        <p class="subtitle">手持ちのキャンプギアを表示する</p>
+        <a href="gear_read.php" class="button is-dark">マイリストへ</a>
     </article>
     </div>
+    <div class="tile is-parent">
+    <article class="tile is-child box">
+        <p class="title">持ち物リスト</p>
+        <p class="subtitle">マイリストのうち持っていくものを表示</p>
+        <a href="gear_read_use.php" class="button is-dark">持ち物リストへ</a>
+    </article>
+    </div>
+
 </div>
 
+<a href="gear_logout.php">ログアウト</a>
 
 
 </body>

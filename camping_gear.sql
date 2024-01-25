@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: 127.0.0.1
--- 生成日時: 2024-01-11 14:08:01
+-- 生成日時: 2024-01-25 14:29:07
 -- サーバのバージョン： 10.4.32-MariaDB
 -- PHP のバージョン: 8.2.12
 
@@ -20,6 +20,124 @@ SET time_zone = "+00:00";
 --
 -- データベース: `camping_gear`
 --
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `category_table`
+--
+
+CREATE TABLE `category_table` (
+  `id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- テーブルのデータのダンプ `category_table`
+--
+
+INSERT INTO `category_table` (`id`, `category`) VALUES
+(1, 'テント'),
+(2, 'タープ・シェード'),
+(3, 'グリル・焚火'),
+(4, '家具'),
+(5, '寝具'),
+(6, '調理グッズ'),
+(7, '電化製品'),
+(8, '保冷グッズ'),
+(9, '小物類');
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `genre_table`
+--
+
+CREATE TABLE `genre_table` (
+  `id` int(11) NOT NULL,
+  `genre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- テーブルのデータのダンプ `genre_table`
+--
+
+INSERT INTO `genre_table` (`id`, `genre`) VALUES
+(1, 'テント'),
+(2, 'タープ'),
+(3, 'シェード'),
+(4, '焚火台'),
+(5, 'テーブル'),
+(6, 'チェア'),
+(7, 'スツール'),
+(8, 'クッション'),
+(9, '寝袋'),
+(10, 'ペグ'),
+(11, 'ポール'),
+(12, 'ハンマー'),
+(13, 'ランタン'),
+(14, '保冷剤'),
+(15, 'クーラーボックス');
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `like_table`
+--
+
+CREATE TABLE `like_table` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- テーブルのデータのダンプ `like_table`
+--
+
+INSERT INTO `like_table` (`id`, `user_id`, `item_id`, `created_at`) VALUES
+(29, 4, 1, '2024-01-25 13:36:01'),
+(30, 4, 12, '2024-01-25 13:36:17'),
+(34, 1, 1, '2024-01-25 17:01:14'),
+(35, 2, 3, '2024-01-25 18:02:21'),
+(36, 2, 8, '2024-01-25 18:02:23'),
+(37, 2, 19, '2024-01-25 18:02:25'),
+(38, 2, 22, '2024-01-25 18:02:27'),
+(39, 5, 21, '2024-01-25 21:20:52'),
+(42, 5, 1, '2024-01-25 21:26:13'),
+(43, 5, 2, '2024-01-25 21:26:14'),
+(44, 5, 3, '2024-01-25 21:26:15'),
+(45, 5, 4, '2024-01-25 21:26:16'),
+(46, 5, 5, '2024-01-25 21:26:17'),
+(47, 5, 9, '2024-01-25 21:47:33'),
+(48, 5, 18, '2024-01-25 21:47:34');
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `maker_table`
+--
+
+CREATE TABLE `maker_table` (
+  `id` int(11) NOT NULL,
+  `maker` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- テーブルのデータのダンプ `maker_table`
+--
+
+INSERT INTO `maker_table` (`id`, `maker`) VALUES
+(1, 'コールマン'),
+(2, 'フィールドア'),
+(3, 'SOTO'),
+(4, 'ロゴス'),
+(5, 'DOD'),
+(6, 'ワークマン'),
+(7, 'クイックキャンプ'),
+(8, 'SPICEofLife'),
+(9, 'ランドポート');
 
 -- --------------------------------------------------------
 
@@ -72,13 +190,84 @@ INSERT INTO `my_table` (`id`, `item`, `category`, `genre`, `maker`, `purchase_da
 (22, 'ポケットストーブ', 'グリル・焚火', 'ポケットストーブ', 'ダイソー', '2022-11-01', 330, 10.0, 7.2, 2.2, 102, '2023-12-21 22:57:08', '2023-12-21 22:57:08'),
 (23, '焚火用グローブ　ロング', 'グリル・焚火', 'グローブ', '不明', '2023-12-22', 2000, 35.0, 14.0, 2.0, 337, '2023-12-22 00:01:03', '2023-12-22 00:01:03'),
 (24, '軍手', '小物類', '軍手', 'ワークマン', '2023-12-23', 2000, 25.0, 20.0, 1.1, 200, '2023-12-23 13:18:14', '2023-12-23 13:18:14'),
-(26, '焚火シート', 'グリル・焚火', '小物', 'フューチャーフォックス', '2023-12-23', 3500, 80.0, 80.0, 1.5, 400, '2024-01-04 18:37:03', '2024-01-04 18:37:03'),
-(33, 'hoge', 'hoge', 'hoge', 'hoge', '2024-01-11', 1500, 10.0, 10.0, 1.0, 300, '2024-01-11 21:36:37', '2024-01-11 21:36:37'),
-(34, 'fuga', 'fuga', 'fuga', 'fuga', '2024-01-11', 3000, 30.0, 30.0, 5.0, 400, '2024-01-11 21:37:11', '2024-01-11 21:37:11');
+(26, '焚火シート', 'グリル・焚火', '小物', 'フューチャーフォックス', '2023-12-23', 3500, 80.0, 80.0, 1.5, 400, '2024-01-04 18:37:03', '2024-01-04 18:37:03');
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `users_table`
+--
+
+CREATE TABLE `users_table` (
+  `id` int(11) NOT NULL,
+  `username` varchar(128) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `is_admin` int(1) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- テーブルのデータのダンプ `users_table`
+--
+
+INSERT INTO `users_table` (`id`, `username`, `password`, `is_admin`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'ami', 'ami01', 0, '2024-01-22 21:18:05', '2024-01-22 21:18:05', NULL),
+(2, 'あかり', 'akari02', 1, '2024-01-22 21:19:14', '2024-01-22 21:19:14', NULL),
+(3, 'いちろう', 'ichirou03', 1, '2024-01-22 21:20:48', '2024-01-22 21:20:48', NULL),
+(4, 'うみ', 'umi04', 1, '2024-01-22 21:21:24', '2024-01-22 21:21:24', NULL),
+(5, 'えいた', 'eita05', 1, '2024-01-22 21:21:55', '2024-01-22 21:21:55', NULL),
+(6, 'おみ', 'omi06', 1, '2024-01-23 06:27:23', '2024-01-23 06:27:23', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `use_table`
+--
+
+CREATE TABLE `use_table` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- テーブルのデータのダンプ `use_table`
+--
+
+INSERT INTO `use_table` (`id`, `user_id`, `item_id`, `created_at`) VALUES
+(1, 5, 2, '2024-01-25 21:26:28'),
+(2, 5, 5, '2024-01-25 21:48:05');
 
 --
 -- ダンプしたテーブルのインデックス
 --
+
+--
+-- テーブルのインデックス `category_table`
+--
+ALTER TABLE `category_table`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- テーブルのインデックス `genre_table`
+--
+ALTER TABLE `genre_table`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- テーブルのインデックス `like_table`
+--
+ALTER TABLE `like_table`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- テーブルのインデックス `maker_table`
+--
+ALTER TABLE `maker_table`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- テーブルのインデックス `my_table`
@@ -87,14 +276,62 @@ ALTER TABLE `my_table`
   ADD PRIMARY KEY (`id`);
 
 --
+-- テーブルのインデックス `users_table`
+--
+ALTER TABLE `users_table`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- テーブルのインデックス `use_table`
+--
+ALTER TABLE `use_table`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- ダンプしたテーブルの AUTO_INCREMENT
 --
+
+--
+-- テーブルの AUTO_INCREMENT `category_table`
+--
+ALTER TABLE `category_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- テーブルの AUTO_INCREMENT `genre_table`
+--
+ALTER TABLE `genre_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- テーブルの AUTO_INCREMENT `like_table`
+--
+ALTER TABLE `like_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- テーブルの AUTO_INCREMENT `maker_table`
+--
+ALTER TABLE `maker_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- テーブルの AUTO_INCREMENT `my_table`
 --
 ALTER TABLE `my_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- テーブルの AUTO_INCREMENT `users_table`
+--
+ALTER TABLE `users_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- テーブルの AUTO_INCREMENT `use_table`
+--
+ALTER TABLE `use_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

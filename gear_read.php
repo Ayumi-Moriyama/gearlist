@@ -1,22 +1,22 @@
 <?php
+session_start();
+include("functions.php");
+check_session_id();
 
-// 各種項目設定
-$dbn ='mysql:dbname=camping_gear;charset=utf8mb4;port=3306;host=localhost';
-$user = 'root';
-$pwd = '';
+$pdo = connect_to_db();
 
-// DB接続
-try {
-  $pdo = new PDO($dbn, $user, $pwd);
-} catch (PDOException $e) {
-  echo json_encode(["db error" => "{$e->getMessage()}"]);
-  exit();
-}
-
+$user_id = $_SESSION['user_id'];
 
 // SQL作成&実行
 // ここで表示したいことを書く（絞り込み、並び替えなど）
-$sql = 'SELECT * FROM `my_table`';
+$sql="SELECT * FROM my_table
+    LEFT OUTER JOIN
+    (SELECT item_id,user_id, COUNT(id) AS like_count
+        FROM like_table
+        GROUP BY item_id
+    ) AS result_table
+    ON  my_table.id = result_table.item_id
+    HAVING user_id = '$user_id'";
 
 $stmt = $pdo->prepare($sql);
 
@@ -41,18 +41,12 @@ if ($status == false) {
 foreach ($result as $record) {
   $output .= "
     <tr>
-      <td></td>
+      <td><a href='use_create.php?user_id={$user_id}&item_id={$record["id"]}'>use</a></td>
       <td>{$record["item"]}</td>
       <td>{$record["genre"]}</td>
       <td>{$record["maker"]}</td>
       <td>{$record["weight"]}</td>
       <td>{$record["price"]}</td>
-      <td>
-        <a href='gear_edit.php?id={$record["id"]}'>edit</a>
-      </td>
-      <td>
-        <a href='gear_delete.php?id={$record["id"]}'>delete</a>
-      </td>
     </tr>
   ";
 }
@@ -66,7 +60,7 @@ foreach ($result as $record) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>キャンプギアリスト（一覧画面）</title>
+  <title>キャンプギアリスト（マイリスト）</title>
   <!-- bulma -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <!-- jQuery -->
@@ -75,9 +69,9 @@ foreach ($result as $record) {
 
 <body>
   <fieldset>
-    <legend>キャンプギアリスト（一覧画面）</legend>
-    <a href="gear_input.php">入力画面へ</a>
-    <a href="gear_index.php">ホームへ</a>
+    <legend>キャンプギアリスト（マイリスト）</legend>
+    <a href="gear_index.php" class="button is-success">ホームへ</a>
+    <a href="gear_read_use.php" class="button is-info">持ち物リストへ</a>
   <div class="columns">
     <div class="column">
       <table class="table is-bordered">
@@ -105,8 +99,6 @@ foreach ($result as $record) {
           <th>メーカー</th>
           <th>重さ（ｇ）</th>
           <th>価格</th>
-          <th>更新</th>
-          <th>削除</th>
         </tr>
       </thead>
       <tbody>
