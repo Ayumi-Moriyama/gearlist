@@ -41,18 +41,12 @@ if ($status == false) {
 foreach ($result as $record) {
   $output .= "
     <tr>
-      <td><a href='like_create.php?user_id={$user_id}&item_id={$record["id"]}'>like</a></td>
+      <td><a href='use_create.php?user_id={$user_id}&item_id={$record["id"]}'>use</a></td>
       <td>{$record["item"]}</td>
       <td>{$record["genre"]}</td>
       <td>{$record["maker"]}</td>
       <td>{$record["weight"]}</td>
       <td>{$record["price"]}</td>
-      <td>
-        <a href='gear_edit.php?id={$record["id"]}'>edit</a>
-      </td>
-      <td>
-        <a href='gear_delete.php?id={$record["id"]}'>delete</a>
-      </td>
     </tr>
   ";
 }
@@ -66,7 +60,7 @@ foreach ($result as $record) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>キャンプギアリスト（一覧画面）</title>
+  <title>キャンプギアリスト（マイリスト）</title>
   <!-- bulma -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <!-- jQuery -->
@@ -75,9 +69,9 @@ foreach ($result as $record) {
 
 <body>
   <fieldset>
-    <legend>キャンプギアリスト（一覧画面）</legend>
-    <a href="gear_input.php" class="button is-info">入力画面へ</a>
+    <legend>キャンプギアリスト（マイリスト）</legend>
     <a href="gear_index.php" class="button is-success">ホームへ</a>
+    <a href="gear_read_use.php" class="button is-info">持ち物リストへ</a>
   <div class="columns">
     <div class="column">
       <table class="table is-bordered">
@@ -105,8 +99,6 @@ foreach ($result as $record) {
           <th>メーカー</th>
           <th>重さ（ｇ）</th>
           <th>価格</th>
-          <th>更新</th>
-          <th>削除</th>
         </tr>
       </thead>
       <tbody>
