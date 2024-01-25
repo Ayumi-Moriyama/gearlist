@@ -18,9 +18,9 @@
         password: <input type="text" name="password">
       </div>
       <div>
-        <button>Register</button>
+        <button>新規登録</button>
       </div>
-      <a href="gear_login.php">or login</a>
+      <a href="gear_login.php">ログイン画面へ</a>
     </fieldset>
   </form>
 

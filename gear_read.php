@@ -1,23 +1,22 @@
 <?php
+session_start();
+include("functions.php");
+check_session_id();
 
-// 各種項目設定
-$dbn ='mysql:dbname=camping_gear;charset=utf8mb4;port=3306;host=localhost';
-$user = 'root';
-$pwd = '';
-
-// DB接続
-try {
-  $pdo = new PDO($dbn, $user, $pwd);
-} catch (PDOException $e) {
-  echo json_encode(["db error" => "{$e->getMessage()}"]);
-  exit();
-}
+$pdo = connect_to_db();
 
 $user_id = $_SESSION['user_id'];
 
 // SQL作成&実行
 // ここで表示したいことを書く（絞り込み、並び替えなど）
-$sql = 'SELECT * FROM `my_table`';
+$sql="SELECT * FROM my_table
+    LEFT OUTER JOIN
+    (SELECT item_id,user_id, COUNT(id) AS like_count
+        FROM like_table
+        GROUP BY item_id
+    ) AS result_table
+    ON  my_table.id = result_table.item_id
+    HAVING user_id = '$user_id'";
 
 $stmt = $pdo->prepare($sql);
 

@@ -32,9 +32,10 @@ if (!$user) {
   exit();
 } else {
   $_SESSION = array();
+  $_SESSION['user_id'] = $user['id'];
   $_SESSION['session_id'] = session_id();
   $_SESSION['is_admin'] = $user['is_admin'];
   $_SESSION['username'] = $user['username'];
-  header("Location:gear_read.php");
+  header("Location:gear_index.php");
   exit();
 }

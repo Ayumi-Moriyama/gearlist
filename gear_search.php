@@ -1,11 +1,49 @@
 <?php
-// 各種項目設定
-$dbn ='mysql:dbname=camping_gear;charset=utf8mb4;port=3306;host=localhost';
-$user = 'root';
-$pwd = '';
+session_start();
+include("functions.php");
+check_session_id();
 
-$dbh=new PDO($dbn,$user,$pwd);
-$dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+$pdo = connect_to_db();
+
+$user_id = $_SESSION['user_id'];
+
+// SQL作成&実行
+// ここで表示したいことを書く（絞り込み、並び替えなど）
+$sql = 'SELECT * FROM `my_table`';
+
+$stmt = $pdo->prepare($sql);
+
+// SQL実行（実行に失敗すると `sql error ...` が出力される）
+try {
+  $status = $stmt->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+
+// DB接続，SQL実行など
+
+if ($status == false) {
+  $error = $stmt->errorInfo();
+  exit('sqlError:'.$error[2]);
+} else {
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  $output = "";
+foreach ($result as $record) {
+  $output .= "
+    <tr>
+      <td><a href='like_create.php?user_id={$user_id}&item_id={$record["id"]}'>like</a></td>
+      <td>{$record["item"]}</td>
+      <td>{$record["genre"]}</td>
+      <td>{$record["maker"]}</td>
+
+
+    </tr>
+  ";
+}
+}
+
 
 //「検索」ボタン押下時
 if (isset($_POST["search"])) {
@@ -30,21 +68,28 @@ $search_maker = $_POST["search_maker"];
 
 //実行
 $sql="SELECT * FROM my_table WHERE item like '%{$search_item}%' and maker like '%{$search_maker}%'";
-$rec = $dbh->prepare($sql);
+$rec = $pdo->prepare($sql);
 $rec->execute();
 $rec_list = $rec->fetchAll(PDO::FETCH_ASSOC);
 
 }else{
 
 //「検索」ボタン押下してないとき
-$sql='SELECT * FROM my_table WHERE 1';
-$rec = $dbh->prepare($sql);
+// $sql='SELECT * FROM my_table WHERE 1';
+$sql='SELECT * FROM my_table
+    LEFT OUTER JOIN
+    (SELECT item_id, COUNT(id) AS like_count
+        FROM like_table
+        GROUP BY item_id
+    ) AS result_table
+    ON  my_table.id = result_table.item_id';
+$rec = $pdo->prepare($sql);
 $rec->execute();
 $rec_list = $rec->fetchAll(PDO::FETCH_ASSOC);
 }
 
 //データベース切断
-$dbh=null;
+// $dbh=null;
 
 ?>
 
@@ -56,10 +101,13 @@ $dbh=null;
     <title>キャンプギアリスト（検索画面）</title>
     <!-- bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!-- FontAwesome -->
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 </head>
 <body>
 <a href="gear_input.php" class="button is-info">入力画面へ</a>
 <a href="gear_index.php" class="button is-success">ホームへ</a>
+<a href="gear_read.php" class="button is-info">マイリストへ</a>
 <!--検索-->
 <form action="gear_search.php" method="POST">
 <table>
@@ -72,29 +120,29 @@ $dbh=null;
 </tr>
 </table>
 </form>
-<br />
 
 <!--検索解除-->
 <?php if (isset($_POST["search"])) {?>
 <a href="gear_search.php">検索を解除</a><br />
 <?php } ?>
 
-<table class="table is-fullwidth">
-<tr>
-<th>名前</th>
-<th>ジャンル</th>
-<th>メーカー</th>
-</tr>
-
-<!--MySQLデータを表示-->
-<?php foreach ($rec_list as $rec) { ?>
-<tr>
-<td><?php echo $rec['item'];?></td>
-<td><?php echo $rec['genre'];?></td>
-<td><?php echo $rec['maker'];?></td>
-</tr>
-<?php } ?>
-</table>
+<!-- 検索結果の表示 -->
+  <div class="columns">
+    <div class="column">
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>チェック</th>
+          <th>アイテム</th>
+          <th>ジャンル</th>
+          <th>メーカー</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?= $output ?>
+      </tbody>
+    </table>
+    </div>
 
 </body>
 </html>

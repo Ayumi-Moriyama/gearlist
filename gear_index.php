@@ -1,3 +1,15 @@
+<?php
+session_start();
+include("functions.php");
+check_session_id();
+
+$pdo = connect_to_db();
+
+$username = $_SESSION['username'];
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -20,6 +32,8 @@
     </div>
     </div>
 </section>
+
+<p><?php $username ?>さんのマイページ</p>
 
 <div class="tile is-ancestor">
     <div class="tile is-parent">
@@ -44,7 +58,7 @@
     </article>
     </div>
 </div>
-
+<a href="gear_logout.php">ログアウト</a>
 
 
 </body>

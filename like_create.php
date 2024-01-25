@@ -45,5 +45,5 @@ try {
   exit();
 }
 
-header("Location:gear_read.php");
+header("Location:gear_search.php");
 exit();
